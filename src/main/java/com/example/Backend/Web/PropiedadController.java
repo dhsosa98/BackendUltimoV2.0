@@ -49,6 +49,11 @@ public class PropiedadController {
         return ubicacionDao.save(ubicacion);
     }
 
+    @GetMapping("/ubicaciones")
+    public List<Ubicacion> getUbicaciones(){
+        return ubicacionDao.findAll();
+    }
+
     @GetMapping("/ubicacion/{id}")
     public ResponseEntity<Ubicacion> getUbicacionById(@PathVariable long id){
         Ubicacion ubicacion = ubicacionDao.findById(id)

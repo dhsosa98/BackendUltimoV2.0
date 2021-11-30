@@ -14,7 +14,7 @@ public class Ubicacion implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ubic;
+    private long ubicacion;
     @NotEmpty
     private String pais;
     @NotEmpty
@@ -34,11 +34,11 @@ public class Ubicacion implements Serializable {
     }
 
     public long getUbic() {
-        return ubic;
+        return ubicacion;
     }
 
-    public void setUbic(long ubic) {
-        this.ubic = ubic;
+    public void setUbic(long ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public String getPais() {
