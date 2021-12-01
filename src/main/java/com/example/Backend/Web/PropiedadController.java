@@ -10,10 +10,11 @@ import com.example.Backend.Dominio.Propietario;
 import com.example.Backend.Dominio.Ubicacion;
 import com.example.Backend.Dominio.User;
 import com.example.Backend.Exception.ResourceNotFoundException;
+import net.bytebuddy.implementation.bytecode.Throw;
+import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,6 +33,24 @@ public class PropiedadController {
 
     @Autowired
     private UbicacionDao ubicacionDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @PostMapping("/login")
+    public ResponseEntity<User> getUUserById(@RequestBody User user){
+        User usuario = userDao.findByEmail(user.getEmail());
+        User usuario2 = userDao.findByPassword(user.getPassword());
+                if (usuario == usuario2){
+                    return ResponseEntity.ok(usuario);
+                }
+        throw new ResourceNotFoundException("El usuario no existe");
+    }
+
+    @PostMapping("/registro")
+    public User crearUsuario(@RequestBody User user){
+        return userDao.save(user);
+    }
 
     @GetMapping("/propiedades")
     public List<Propiedad> getPropiedades(){

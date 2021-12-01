@@ -4,7 +4,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.List;
+
 
 @Data
 @Entity
@@ -23,9 +23,7 @@ public class User implements Serializable {
     @NotEmpty
     private String password;
 
-    @OneToMany
-    @JoinColumn(name="id_usuario")
-    private List<Rol> role;
+    private String role;
 
     public User() { }
 
@@ -49,11 +47,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<Rol> getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(List<Rol> role) {
+    public void setRole(String role) {
         this.role = role;
     }
 }
