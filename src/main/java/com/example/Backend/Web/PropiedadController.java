@@ -40,8 +40,7 @@ public class PropiedadController {
     @PostMapping("/login")
     public ResponseEntity<User> getUUserById(@RequestBody User user){
         User usuario = userDao.findByEmail(user.getEmail());
-        User usuario2 = userDao.findByPassword(user.getPassword());
-                if (usuario == usuario2){
+                if ((user != null)&&(user.getPassword().equals(user.getPassword()))){
                     return ResponseEntity.ok(usuario);
                 }
         throw new ResourceNotFoundException("El usuario no existe");
@@ -65,6 +64,17 @@ public class PropiedadController {
 
     @PostMapping("/registrarUbicacion")
     public Ubicacion crearUbicacion(@RequestBody Ubicacion ubicacion){
+        List<Ubicacion> AllUbicattions = ubicacionDao.findAll();
+        for (Ubicacion ubicacionInList : AllUbicattions) {
+            if ((ubicacionInList.getPais().equals(ubicacion.getPais()))&&
+            (ubicacionInList.getCiudad().equals(ubicacion.getCiudad()))&&
+            (ubicacionInList.getProvincia().equals(ubicacion.getProvincia()))&&
+            (ubicacionInList.getDireccion().equals(ubicacion.getDireccion()))&&
+            (ubicacionInList.getNumero().equals(ubicacion.getNumero()))
+            ){
+                throw new ResourceNotFoundException("La ubicacion ya existe");
+            }
+        }
         return ubicacionDao.save(ubicacion);
     }
 
@@ -80,6 +90,25 @@ public class PropiedadController {
         return ResponseEntity.ok(ubicacion);
     }
 
+    @PutMapping("/ubicacion/{id}")
+    public ResponseEntity<Ubicacion> updateUbicacion(@PathVariable long id,@RequestBody Ubicacion ubicacionDetails) {
+        Ubicacion updateUbicacion = ubicacionDao.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El id de la ubicacion no existe con: " + id));
+
+        updateUbicacion.setPais(ubicacionDetails.getPais());
+        updateUbicacion.setProvincia(ubicacionDetails.getProvincia());
+        updateUbicacion.setCiudad(ubicacionDetails.getCiudad());
+        updateUbicacion.setBarrio(ubicacionDetails.getBarrio());
+        updateUbicacion.setDireccion(ubicacionDetails.getDireccion());
+        updateUbicacion.setNumero(ubicacionDetails.getNumero());
+        updateUbicacion.setPiso(ubicacionDetails.getPiso());
+        updateUbicacion.setDpto(ubicacionDetails.getDpto());
+
+        ubicacionDao.save(updateUbicacion);
+
+        return ResponseEntity.ok(updateUbicacion);
+    }
+
     // build get propiedad by id REST API
     @GetMapping("{id}")
     public ResponseEntity<Propiedad> getPropiedadById(@PathVariable long id){
@@ -92,7 +121,7 @@ public class PropiedadController {
     @PutMapping("{id}")
     public ResponseEntity<Propiedad> updatePropiedad(@PathVariable long id,@RequestBody Propiedad propiedadDetails) {
         Propiedad updatePropiedad = propiedadDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("El id de la propiedad no existe con: " + id));
 
         updatePropiedad.setMedidas(propiedadDetails.getMedidas());
         updatePropiedad.setAntiguedad(propiedadDetails.getAntiguedad());
@@ -101,6 +130,7 @@ public class PropiedadController {
         updatePropiedad.setServicios(propiedadDetails.getServicios());
         updatePropiedad.setEstado(propiedadDetails.getEstado());
         updatePropiedad.setTipo(propiedadDetails.getTipo());
+        updatePropiedad.setPropietario(propiedadDetails.getPropietario());
 
         propiedadDao.save(updatePropiedad);
 
