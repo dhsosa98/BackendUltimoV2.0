@@ -33,12 +33,12 @@ public class Propietario implements Serializable {
     public Propietario() {
     }
 
-    public Long getIdPropiedario() {
+    public Long getIdPropietario() {
         return idPropietario;
     }
 
-    public void setIdPropiedario(Long idPropiedario) {
-        this.idPropietario = idPropiedario;
+    public void setIdPropiedario(Long idPropietario) {
+        this.idPropietario = idPropietario;
     }
 
     public String getNombres() {
