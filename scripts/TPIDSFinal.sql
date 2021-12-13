@@ -2,7 +2,7 @@
 --
 -- Host: 127.0.0.1    Database: domus
 -- ------------------------------------------------------
--- Server version	8.0.26
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -38,8 +38,8 @@ CREATE TABLE `propiedad` (
   KEY `propietario_idx` (`propietario`),
   KEY `ubicacion_idx` (`ubicacion`),
   CONSTRAINT `propietario` FOREIGN KEY (`propietario`) REFERENCES `propietario` (`id_propietario`),
-  CONSTRAINT `ubicacion` FOREIGN KEY (`ubicacion`) REFERENCES `ubicacion` (`ubicacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `ubicacion` FOREIGN KEY (`ubicacion`) REFERENCES `ubicacion` (`ubicacion`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,9 +48,26 @@ CREATE TABLE `propiedad` (
 
 LOCK TABLES `propiedad` WRITE;
 /*!40000 ALTER TABLE `propiedad` DISABLE KEYS */;
-INSERT INTO `propiedad` VALUES (10,'40x40',121121,'SI','ads','addsa','Disponible','Alquiler',10,212121,1),(11,'40x40',333,'SI','dadsda','dassdad','Disponible','Alquiler',11,2222,1),(12,'50x40',121121,'SI','ads','addsa','Disponible','Alquiler',12,212121,2),(13,'200x200',212112,'SI','kashakhs','shaksha','No Disponible','Alquiler',13,212121,1),(14,'250x32',21212,'SI','sasdsadas','sdsadsada','Disponible','Alquiler',14,212121,1),(15,'40x30',12121,'SI','addsa','sdadsaasd','Disponible','Alquiler',15,212123,2),(16,'2000x2000',21121,'SI','sabjsanba','assajsajsa','Disponible','Alquiler',16,12122,2),(17,'30x20',2222,'SI','wjkqjkwqjk','kjwqjkwqj','No Disponible','Alquiler',17,2222,2),(18,'10x10',55555,'SI','kjkjk','hhhjhjhj','Disponible','Alquiler',18,7777,2),(19,'345x234',2121,'SI','jkjkdjks','jdajkdakj','No Disponible','Alquiler',19,21212,2),(20,'21x21',12121,'2','sajksjkakj','kjsajksajksa','Disponible','Alquiler',20,12121,1),(21,'1000x1000',121212,'SI','sasa','dasdada','Disponible','Alquiler',21,2112121,1),(25,'20x20',10,'SI','jskasjk','jajksjakj','Disponible','Venta',25,10000,1),(26,'20x25',28,'NO','Nada','Agua, Luz, Gas, Internet','Disponible','Venta',26,10000000,3),(27,'200x400',10,'NO','Nada','Nada','Disponible','Venta',27,30000000,2);
+INSERT INTO `propiedad` VALUES (10,'40x40',121121,'SI','ads','addsa','Disponible','Alquiler',10,212121,1),(11,'40x40',333,'SI','dadsda','dassdad','Disponible','Alquiler',11,2222,1),(12,'50x40',121121,'SI','ads','addsa','Disponible','Alquiler',12,212121,2),(13,'200x200',212112,'SI','kashakhs','shaksha','No Disponible','Alquiler',13,212121,1),(14,'250x32',21212,'SI','sasdsadas','sdsadsada','Disponible','Alquiler',14,212121,1),(15,'40x30',12121,'SI','addsa','sdadsaasd','Disponible','Alquiler',15,212123,2),(16,'2000x2000',21121,'SI','sabjsanba','assajsajsa','Disponible','Alquiler',16,12122,2),(17,'30x20',2222,'SI','wjkqjkwqjk','kjwqjkwqj','No Disponible','Alquiler',17,2222,2),(18,'10x10',55555,'SI','kjkjk','hhhjhjhj','Disponible','Alquiler',18,7777,2),(20,'21x21',12121,'2','sajksjkakj','kjsajksajksa','Disponible','Alquiler',20,12121,1),(21,'1000x1000',121212,'SI','sasa','dasdada','Disponible','Alquiler',21,2112121,1),(25,'20x20',10,'SI','jskasjk','jajksjakj','Disponible','Venta',25,10000,1),(26,'20x25',28,'NO','Nada','Agua, Luz, Gas, Internet','Disponible','Venta',26,10000000,3);
 /*!40000 ALTER TABLE `propiedad` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`admin`@`%`*/ /*!50003 TRIGGER `propiedad_AFTER_DELETE` AFTER DELETE ON `propiedad` FOR EACH ROW BEGIN
+	DELETE FROM ubicacion WHERE ubicacion.ubicacion=old.ubicacion;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `propietario`
@@ -98,7 +115,7 @@ CREATE TABLE `ubicacion` (
   `piso` varchar(45) DEFAULT NULL,
   `dpto` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`ubicacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +124,7 @@ CREATE TABLE `ubicacion` (
 
 LOCK TABLES `ubicacion` WRITE;
 /*!40000 ALTER TABLE `ubicacion` DISABLE KEYS */;
-INSERT INTO `ubicacion` VALUES (10,'Argentina','Corrientes','Corrientes','9 de julio','1222','dasdadsa','2121','adasd'),(11,'Argentina','Corrientes','Corrientes','Rioja','211','sdaadsda','1212','dasdsadas'),(12,'Argentina','Chaco','Resistencia','25 de Mayo','888','dsdssad','1222','dsassa'),(13,'Argentina','Chaco','Barranqueras','España','234','jksajkasjksjak','2121','222as'),(14,'Argentina','Chaco','Barranqueras','Colombia','222','kjwqjkwqjkjwk','2','jksjka'),(15,'Argentina','Corrientes','Corrientes','9 de julio','998','jhhjhjhj','78877','212'),(16,'Argentina','Corrientes','Corrientes','3 de abril','2121','jnknjjk','21212','21221'),(17,'Argentina','Corrientes','Corrientes','Córdoba','334','guemes','222','s22'),(18,'Argentina','Corrientes','Corrientes','9 de julio','121','dadsa','1121','21212'),(19,'Argentina','Corrientes','Corrientes','Junin','777','sdasdasd','22233','sasas'),(20,'Argentina','Formosa','Formosa','La plata','654',NULL,NULL,NULL),(21,'Argentina','Córdoba','Cordoba','Lavalle','487',NULL,NULL,NULL),(25,'Argentina','Formosa','Colorado','3 de Abril','1878',NULL,NULL,NULL),(26,'Argentina','Chaco','Juan José Casteri','Rivadavia','765',NULL,NULL,NULL),(27,'Argentina','Santa Fé','Rosario','Maradona','1201',NULL,NULL,NULL);
+INSERT INTO `ubicacion` VALUES (10,'Argentina','Corrientes','Corrientes','9 de julio','1222','dasdadsa','2121','adasd'),(11,'Argentina','Corrientes','Corrientes','Rioja','211','sdaadsda','1212','dasdsadas'),(12,'Argentina','Chaco','Resistencia','25 de Mayo','888','dsdssad','1222','dsassa'),(13,'Argentina','Chaco','Barranqueras','España','234','jksajkasjksjak','2121','222as'),(14,'Argentina','Chaco','Barranqueras','Colombia','222','kjwqjkwqjkjwk','2','jksjka'),(15,'Argentina','Corrientes','Corrientes','9 de julio','998','jhhjhjhj','78877','212'),(16,'Argentina','Corrientes','Corrientes','3 de abril','2121','jnknjjk','21212','21221'),(17,'Argentina','Corrientes','Corrientes','Córdoba','334','guemes','222','s22'),(18,'Argentina','Corrientes','Corrientes','9 de julio','121','dadsa','1121','21212'),(19,'Argentina','Corrientes','Corrientes','Junin','777','sdasdasd','22233','sasas'),(20,'Argentina','Formosa','Formosa','La plata','654',NULL,NULL,NULL),(21,'Argentina','Córdoba','Cordoba','Lavalle','487',NULL,NULL,NULL),(25,'Argentina','Formosa','Colorado','3 de Abril','1878',NULL,NULL,NULL),(26,'Argentina','Chaco','Juan José Casteri','Rivadavia','765',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ubicacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,11 +138,11 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id_usuario` int NOT NULL AUTO_INCREMENT,
   `email` char(20) NOT NULL,
-  `password` char(20) NOT NULL,
+  `password` varchar(64) NOT NULL,
   `role` char(20) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +151,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'inmb@domus.com','1234imb','Inmobiliario');
+INSERT INTO `users` VALUES (4,'inmb@domus.com','$2a$10$Om1rCUJvW5BTPpR6XJa5WuoQP9txrHlm6dq5scD.B6WxprNPIuoDm','Inmobiliario');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -147,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-01 11:22:52
+-- Dump completed on 2021-12-13  2:35:51

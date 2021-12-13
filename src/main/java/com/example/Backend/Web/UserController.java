@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,9 +29,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> getUUserById(@RequestBody User user){
-        User usuario = userDao.findByEmail(user.getEmail());
+        User userDB = userDao.findByEmail(user.getEmail());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String token = getJWTToken(user.getEmail());
-                if ((user != null)&&(user.getPassword().equals(usuario.getPassword()))){
+                if ((userDB != null)&&(bCryptPasswordEncoder.matches(user.getPassword(), userDB.getPassword()))){
                     return ResponseEntity.ok(token);
                 }
         throw new ResourceNotFoundException("El usuario no existe");
@@ -38,6 +40,9 @@ public class UserController {
 
     @PostMapping("/registro")
     public User crearUsuario(@RequestBody User user){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashedPass1 = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPass1);
         return userDao.save(user);
     }
 

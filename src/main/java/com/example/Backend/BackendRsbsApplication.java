@@ -43,7 +43,7 @@ public class BackendRsbsApplication {
 				.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
 				.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/v1/login").permitAll().antMatchers(HttpMethod.POST, "/api/v1/registro").permitAll()
 				.anyRequest().authenticated();
 		}
 	}
